@@ -29,4 +29,4 @@ hystrix:
       execution:
         isolation:
           thread:
-            timeoutInMillisecond: 100000 # 熔断超时时长：10000ms
+            timeoutInMilliseconds: 100000 # 熔断超时时长：10000ms
