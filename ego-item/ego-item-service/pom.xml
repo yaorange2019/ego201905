@@ -49,7 +49,7 @@
             <version>${mysql.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.ego.service</groupId>
+            <groupId>com.ego.item</groupId>
             <artifactId>ego-item-interface</artifactId>
             <version>${ego.latest.version}</version>
         </dependency>

@@ -5,7 +5,6 @@ import com.ego.item.mapper.BrandMapper;
 import com.ego.item.pojo.Brand;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -68,5 +67,9 @@ public class BrandService {
                 brandMapper.insertCategoryBrand(brand.getId(), cid);
             }
         }
+    }
+
+    public List<Brand> findListByCid(Long cid) {
+        return  brandMapper.findListByCid(cid);
     }
 }

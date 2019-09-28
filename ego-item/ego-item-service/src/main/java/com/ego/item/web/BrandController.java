@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * 〈〉
  *
@@ -46,5 +48,12 @@ public class BrandController {
         brandService.save(brand, cids);
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("cid/{cid}")
+    public ResponseEntity<List<Brand>> queryBrandListByCid(@PathVariable("cid") Long cid) {
+        List<Brand> result = brandService.findListByCid(cid);
+
+        return ResponseEntity.ok(result);
     }
 }
