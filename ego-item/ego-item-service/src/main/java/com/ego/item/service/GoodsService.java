@@ -115,4 +115,15 @@ public class GoodsService {
             stockMapper.insertSelective(stock);
         }
     }
+
+    public List<Sku> findSkusBySpuId(Long spuId) {
+        Sku sku = new Sku();
+        sku.setSpuId(spuId);
+
+        return skuMapper.select(sku);
+    }
+
+    public SpuDetail findSpuDetailBySpuId(Long spuId) {
+        return spuDetailMapper.selectByPrimaryKey(spuId);
+    }
 }

@@ -1,12 +1,16 @@
 package com.ego.item.web;
 
 import com.ego.common.pojo.PageResult;
+import com.ego.item.pojo.Sku;
 import com.ego.item.pojo.SpuBO;
+import com.ego.item.pojo.SpuDetail;
 import com.ego.item.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 〈〉
@@ -49,4 +53,21 @@ public class GoodsController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @GetMapping("skus")
+    public ResponseEntity<List<Sku>> querySkusBySpuId(@RequestParam("spuId") Long spuId)
+    {
+        List<Sku> result = goodsService.findSkusBySpuId(spuId);
+        return ResponseEntity.ok(result);
+    }
+
+
+    @GetMapping("specification")
+    public ResponseEntity<String> querySpecificationBySpuId(@RequestParam("spuId")Long spuId){
+        SpuDetail spuDetail = goodsService.findSpuDetailBySpuId(spuId);
+        if(spuDetail==null)
+        {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(spuDetail.getSpecifications());
+    }
 }
