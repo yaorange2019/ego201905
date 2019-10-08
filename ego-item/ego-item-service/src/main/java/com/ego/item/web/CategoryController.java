@@ -63,6 +63,10 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    @GetMapping("list/ids")
+    public ResponseEntity<List<Category>> queryListByIds(@RequestParam("ids") List<Long> ids){
 
+        return ResponseEntity.ok(categoryService.findListByIds(ids));
+    }
 
 }

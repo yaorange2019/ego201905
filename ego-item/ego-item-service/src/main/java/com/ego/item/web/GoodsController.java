@@ -70,4 +70,15 @@ public class GoodsController {
         }
         return ResponseEntity.ok(spuDetail.getSpecifications());
     }
+
+    @GetMapping("spuBO/{spuId}")
+    public ResponseEntity<SpuBO> queryGoodsById(@PathVariable("spuId") Long spuId)
+    {
+        SpuBO result = goodsService.findSpuBOById(spuId);
+        if(result==null)
+        {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(result);
+    }
 }

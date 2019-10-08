@@ -43,4 +43,8 @@ public class CategoryService {
     public void deleteById(Long id) {
         categoryMapper.deleteByPrimaryKey(id);
     }
+
+    public List<Category> findListByIds(List<Long> ids) {
+        return categoryMapper.selectByIdList(ids);
+    }
 }

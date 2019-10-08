@@ -2,7 +2,7 @@ package com.ego.search.web;
 
 import com.ego.common.pojo.PageResult;
 import com.ego.search.pojo.Goods;
-import com.ego.search.pojo.SearchRequest;
+import com.ego.search.dto.SearchRequest;
 import com.ego.search.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

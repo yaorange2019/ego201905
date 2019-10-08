@@ -126,4 +126,23 @@ public class GoodsService {
     public SpuDetail findSpuDetailBySpuId(Long spuId) {
         return spuDetailMapper.selectByPrimaryKey(spuId);
     }
+
+    public SpuBO findSpuBOById(Long spuId) {
+        SpuBO spuBO = new SpuBO();
+        Spu spu = spuMapper.selectByPrimaryKey(spuId);
+        BeanUtils.copyProperties(spu, spuBO);
+
+        //spuDetail
+        SpuDetail spuDetail = spuDetailMapper.selectByPrimaryKey(spuId);
+        spuBO.setSpuDetail(spuDetail);
+
+        //skus
+        Sku sku = new Sku();
+        sku.setSpuId(spuId);
+
+        List<Sku> skus = skuMapper.select(sku);
+        spuBO.setSkus(skus);
+
+        return spuBO;
+    }
 }

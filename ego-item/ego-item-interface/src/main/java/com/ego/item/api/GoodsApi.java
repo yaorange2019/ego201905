@@ -39,4 +39,6 @@ public interface GoodsApi {
     @GetMapping("specification")
     public ResponseEntity<String> querySpecificationBySpuId(@RequestParam("spuId")Long spuId);
 
+    @GetMapping("spuBO/{spuId}")
+    public ResponseEntity<SpuBO> queryGoodsById(@PathVariable("spuId") Long spuId);
 }

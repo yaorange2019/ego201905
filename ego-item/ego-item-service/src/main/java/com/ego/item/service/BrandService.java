@@ -72,4 +72,8 @@ public class BrandService {
     public List<Brand> findListByCid(Long cid) {
         return  brandMapper.findListByCid(cid);
     }
+
+    public List<Brand> findListByIds(List<Long> ids) {
+        return brandMapper.selectByIdList(ids);
+    }
 }
