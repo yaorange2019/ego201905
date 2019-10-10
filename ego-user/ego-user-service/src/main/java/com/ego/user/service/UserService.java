@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -33,7 +32,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 @Service
-public class UserService {
+public class UserService implements RabbitTemplate.ConfirmCallback {
 
 
     @Autowired
@@ -45,13 +44,13 @@ public class UserService {
     @Autowired
     private AmqpTemplate amqpTemplate;
 
-//    @Autowired
-//    private RabbitTemplate rabbitTemplate;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
     //告诉spring每次给我一个新的实例
-    @Lookup
-    protected   RabbitTemplate rabbitTemplate(){
-        return  null;
-    };
+//    @Lookup
+//    protected   RabbitTemplate rabbitTemplate(){
+//        return  null;
+//    };
 
 
     public Boolean check(String data, Integer type) {
@@ -88,15 +87,16 @@ public class UserService {
         CorrelationData correlationData = new CorrelationData(phone);
 
         //一个rabbitTemplate只能有一个回调，因此要保证每次拿到的模板是不同对象
-        RabbitTemplate rabbitTemplate  = this.rabbitTemplate();
+//        RabbitTemplate rabbitTemplate  = this.rabbitTemplate();
         rabbitTemplate.setMandatory(true);
         //mq收到消息后，会执行该回调方法
-        rabbitTemplate.setConfirmCallback(new RabbitTemplate.ConfirmCallback() {
-            @Override
-            public void confirm(CorrelationData correlationData, boolean ack, String cause) {
-                log.info("MQ成功接收到手机号[{}]消息",correlationData.getId());
-            }
-        });
+//        rabbitTemplate.setConfirmCallback(new RabbitTemplate.ConfirmCallback() {
+//            @Override
+//            public void confirm(CorrelationData correlationData, boolean ack, String cause) {
+//                log.info("MQ成功接收到手机号[{}]消息",correlationData.getId());
+//            }
+//        });
+        rabbitTemplate.setConfirmCallback(this);
         rabbitTemplate.convertAndSend("sms.verify.code",message,correlationData);
     }
 
@@ -120,5 +120,10 @@ public class UserService {
             result = true;
         }
         return result;
+    }
+
+    @Override
+    public void confirm(CorrelationData correlationData, boolean ack, String cause) {
+        log.info("MQ成功接收到手机号[{}]消息",correlationData.getId());
     }
 }
