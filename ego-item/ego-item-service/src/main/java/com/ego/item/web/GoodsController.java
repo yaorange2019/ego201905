@@ -81,4 +81,17 @@ public class GoodsController {
         }
         return ResponseEntity.ok(result);
     }
+
+    @PutMapping
+    public ResponseEntity<Void> update(@RequestBody SpuBO spuBO){
+        goodsService.update(spuBO);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/spu/detail/{spuId}")
+    public ResponseEntity<SpuDetail> querySpuDetailBySpuId(@PathVariable("spuId") Long spuId) {
+        SpuDetail result = goodsService.findSpuDetailBySpuId(spuId);
+
+        return ResponseEntity.ok(result);
+    }
 }

@@ -19,6 +19,7 @@ zuul:
     item-service: /item/** # 将商品微服务映射到/item/**
     upload-service: /upload/** # 将上传微服务映射到/upload/**
     search-service: /search/**
+    user-service: /user/**
   ignored-services:
     - upload-service # 忽略upload-service服务
 ribbon:

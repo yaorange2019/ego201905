@@ -6,6 +6,7 @@ import com.ego.item.pojo.*;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,6 +45,9 @@ public class GoodsService {
 
     @Autowired
     private BrandMapper brandMapper;
+
+    @Autowired
+    private AmqpTemplate amqpTemplate;
 
     public PageResult<SpuBO> page(Integer pageNo, Integer pageSize, String sortBy, Boolean descending, String key, Boolean saleable) {
 
@@ -114,9 +119,48 @@ public class GoodsService {
             stock.setSkuId(sku.getId());
             stockMapper.insertSelective(stock);
         }
+
+        //发消息到mq
+        amqpTemplate.convertAndSend("item.insert", spuBO.getId());
     }
 
-    public List<Sku> findSkusBySpuId(Long spuId) {
+    @Transactional
+    public void update(SpuBO spuBO) {
+        //1.修改spu
+        spuBO.setLastUpdateTime(new Date());
+        spuMapper.updateByPrimaryKeySelective(spuBO);
+        //2.修改spu detail
+        SpuDetail spuDetail = spuBO.getSpuDetail();
+        spuDetailMapper.updateByPrimaryKeySelective(spuDetail);
+        //3.刪除以前的sku以及stock
+        Sku skuExample = new Sku();
+        skuExample.setSpuId(spuBO.getId());
+        List<Sku> skuList = skuMapper.select(skuExample);
+        skuList.forEach(s -> {
+            skuMapper.deleteByPrimaryKey(s);
+            stockMapper.deleteByPrimaryKey(s.getId());
+        });
+
+        //4.添加sku&stock
+        if (spuBO.getSkus() != null && spuBO.getSkus().size() > 0) {
+            spuBO.getSkus().forEach(sku -> {
+                sku.setId(null);
+                sku.setCreateTime(spuBO.getCreateTime());
+                sku.setLastUpdateTime(spuBO.getCreateTime());
+                sku.setSpuId(spuBO.getId());
+                skuMapper.insertSelective(sku);
+
+                sku.getStock().setSkuId(sku.getId());
+                stockMapper.insertSelective(sku.getStock());
+            });
+        }
+
+        //发消息到mq
+        amqpTemplate.convertAndSend("item.update", spuBO.getId());
+
+    }
+
+  public List<Sku> findSkusBySpuId(Long spuId) {
         Sku sku = new Sku();
         sku.setSpuId(spuId);
 
@@ -142,6 +186,16 @@ public class GoodsService {
 
         List<Sku> skus = skuMapper.select(sku);
         spuBO.setSkus(skus);
+
+        //类名名字
+        String categoryName="";
+        List<Category> categoryList = categoryMapper.selectByIdList(Arrays.asList(spuBO.getCid1(), spuBO.getCid2(), spuBO.getCid3()));
+        for (Category category : categoryList) {
+            categoryName += category.getName() + "/";
+        }
+        spuBO.setCategoryNames(categoryName);
+
+        spuBO.setBrandName(brandMapper.selectByPrimaryKey(spuBO.getBrandId()).getName());
 
         return spuBO;
     }
