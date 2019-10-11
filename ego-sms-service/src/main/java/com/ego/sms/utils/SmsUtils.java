@@ -36,7 +36,7 @@ public class SmsUtils {
             CommonResponse response = client.getCommonResponse(request);
             System.out.println(response.getData());
         } catch (ClientException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }

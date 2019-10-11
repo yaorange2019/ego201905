@@ -1,5 +1,6 @@
 package com.ego.sms.listener;
 
+import com.ego.sms.utils.SmsUtils;
 import com.rabbitmq.client.Channel;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.Exchange;
@@ -39,7 +40,7 @@ public class SmsListener {
 
         //调用阿里大于短信平台发送短信
 
-//        SmsUtils.sendSms(phone, code);
+        SmsUtils.sendSms(phone, code);
 
         //手动确认
         channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);

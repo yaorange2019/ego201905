@@ -45,4 +45,16 @@ public class UserController {
         }
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    @GetMapping("user/{username}/{password}")
+    ResponseEntity<User> findUserByUP(@PathVariable("username") String username,
+                                      @PathVariable("password") String password){
+
+        User user = userService.findUserByUP(username, password);
+        if(user==null)
+        {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(user);
+    }
 }
