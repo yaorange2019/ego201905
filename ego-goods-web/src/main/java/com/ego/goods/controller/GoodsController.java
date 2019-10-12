@@ -32,7 +32,7 @@ public class GoodsController {
         //传递模型数据
         model.addAllAttributes(map);
         //生成静态页面
-        goodsService.buildStaticHtml(spuId,map);
+//        goodsService.buildStaticHtml(spuId,map);
         return "item";
     }
 

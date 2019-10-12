@@ -198,16 +198,16 @@
 							<div class="fl title">
 								<div class="control-group">
 									<div class="controls">
-										<input autocomplete="off" type="text" disabled value="1" minnum="1" class="itxt" />
-										<a href="javascript:void(0)" class="increment plus">+</a>
-										<a href="javascript:void(0)" class="increment mins">-</a>
+										<input autocomplete="off" type="text" v-model="num" disabled value="1" minnum="1" class="itxt" />
+										<a href="javascript:void(0)" class="increment plus" @click="num++">+</a>
+										<a href="javascript:void(0)" class="increment mins" @click="num--">-</a>
 									</div>
 								</div>
 							</div>
 							<div class="fl">
 								<ul class="btn-choose unstyled">
 									<li>
-										<a href="success-cart.html" target="_blank" class="sui-btn  btn-danger addshopcar">加入购物车</a>
+										<a href="#"  class="sui-btn  btn-danger addshopcar" @click="addCart">加入购物车</a>
 									</li>
 								</ul>
 							</div>
@@ -620,7 +620,8 @@
 			groups,
 			index,
 			ego,
-			spuDetail
+			spuDetail,
+			num:1
         },
         components:{
             egoTop: () => import('/js/pages/top.js')
@@ -644,6 +645,68 @@
 			,
 			images(){
 				return this.sku.images ? this.sku.images.split(",") : [''];
+			}
+		},
+		methods:{
+			addCart(){
+				//判断是否已经登录
+				ego.http("/auth/verify")
+				.then(resp=>{
+					//已登录
+					//发送ajax
+					ego.http({
+						url:"cart",
+						method:"post",
+						params:{
+							"skuId":this.sku.id,
+							"num":this.num
+						}
+					}).then(resp=>{
+                        //跳转到购物车页面
+                        location.href = "http://www.ego.com/cart.html";
+                    })
+				}).catch(resp=>{
+					//未登录
+					let carts = ego.store.get("carts") || [];
+					//已经存在购物车
+					if(carts)
+					{
+						//判断有没有该购物项
+						let cart = carts.find(cart => cart.skuId === this.sku.id);
+						if(cart)
+						{
+							cart.num += this.num;
+						}
+						else
+						{
+							cart = {
+								skuId:this.sku.id,
+								image:this.sku.images,
+								price:this.sku.price,
+								num:this.num,
+								title:this.sku.title,
+								ownSpec:this.sku.ownSpec
+							};
+							carts.push(cart);
+						}
+					}
+					else
+					{
+						cart = {
+							skuId:this.sku.id,
+							image:this.sku.image,
+							price:this.sku.price,
+							num:this.num,
+							title:this.sku.title,
+							ownSpec:this.sku.ownSpec
+						};
+						carts.push(cart);
+					}
+					ego.store.set("carts", carts);
+
+					//跳转到购物车页面
+					location.href = "http://www.ego.com/cart.html";
+				})
 			}
 		}
     });

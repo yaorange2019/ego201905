@@ -199,4 +199,9 @@ public class GoodsService {
 
         return spuBO;
     }
+
+    public Sku findSkuBySkuId(Long skuId) {
+        return skuMapper.selectByPrimaryKey(skuId);
+    }
+
 }
