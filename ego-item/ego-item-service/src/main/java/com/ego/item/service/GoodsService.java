@@ -1,5 +1,8 @@
 package com.ego.item.service;
 
+import com.ego.common.enums.ExceptionEnum;
+import com.ego.common.exception.PayException;
+import com.ego.common.pojo.CartDto;
 import com.ego.common.pojo.PageResult;
 import com.ego.item.mapper.*;
 import com.ego.item.pojo.*;
@@ -14,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -203,5 +205,13 @@ public class GoodsService {
     public Sku findSkuBySkuId(Long skuId) {
         return skuMapper.selectByPrimaryKey(skuId);
     }
-
+    @Transactional
+    public void decreaseStock(List<CartDto> cartDtos) {
+        for (CartDto cartDto : cartDtos) {
+            int count = stockMapper.decreaseStock(cartDto.getSkuId(), cartDto.getNum());
+            if (count != 1) {
+                throw new PayException(ExceptionEnum.STOCK_NOT_ENOUGH);
+            }
+        }
+    }
 }

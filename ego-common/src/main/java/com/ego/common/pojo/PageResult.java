@@ -7,7 +7,7 @@ import java.util.List;
  *
  * @author coach tam
  * @email 327395128@qq.com
- * @create 2019/9/25
+ * @create 2019/3/15
  * @since 1.0.0
  * 〈坚持灵活 灵活坚持〉
  */
@@ -15,8 +15,6 @@ public class PageResult<T> {
     private Long total;// 总条数
     private Long totalPage;// 总页数
     private List<T> items;// 当前页数据
-
-
 
     public PageResult() {
     }

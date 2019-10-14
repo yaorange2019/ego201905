@@ -1,5 +1,6 @@
 package com.ego.item.web;
 
+import com.ego.common.pojo.CartDto;
 import com.ego.common.pojo.PageResult;
 import com.ego.item.pojo.Sku;
 import com.ego.item.pojo.SpuBO;
@@ -104,5 +105,16 @@ public class GoodsController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(sku);
+    }
+
+    /**
+     * 减库存
+     * @param cartDtos
+     * @return
+     */
+    @PostMapping("stock/decrease")
+    public ResponseEntity<Void> decreaseStock(@RequestBody List<CartDto> cartDtos){
+        goodsService.decreaseStock(cartDtos);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

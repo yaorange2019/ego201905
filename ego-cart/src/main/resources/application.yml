@@ -5,6 +5,11 @@ spring:
     name: cart-service
   redis:
     host: 192.168.249.129
+  rabbitmq:
+    host: 192.168.249.129
+    username: ego
+    password: ego
+    virtual-host: /ego
 eureka:
   client:
     service-url:
