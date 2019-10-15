@@ -5,6 +5,7 @@ import com.ego.common.pojo.PageResult;
 import com.ego.item.pojo.Sku;
 import com.ego.item.pojo.SpuBO;
 import com.ego.item.pojo.SpuDetail;
+import com.ego.item.pojo.Stock;
 import com.ego.item.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -115,6 +116,25 @@ public class GoodsController {
     @PostMapping("stock/decrease")
     public ResponseEntity<Void> decreaseStock(@RequestBody List<CartDto> cartDtos){
         goodsService.decreaseStock(cartDtos);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+
+    @GetMapping("stock/skuIds")
+    public ResponseEntity<List<Stock>> queryStockList(@RequestParam("skuIds") List<Long> skuIds){
+        List<Stock> result = goodsService.findStockList(skuIds);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("stock/{skuId}")
+    public ResponseEntity<Stock> queryStockBySkuId(@PathVariable("skuId") Long skuId){
+        Stock result = goodsService.getStockBySkuId(skuId);
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("stock/seckill/decrease")
+    public ResponseEntity<Void> decreaseSeckillStock(@RequestBody CartDto cartDTO){
+        goodsService.decreaseSeckillStock(cartDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

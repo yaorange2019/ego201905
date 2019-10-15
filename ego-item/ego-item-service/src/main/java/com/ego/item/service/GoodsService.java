@@ -214,4 +214,21 @@ public class GoodsService {
             }
         }
     }
+
+
+    public List<Stock> findStockList(List<Long> skuIds) {
+        return stockMapper.selectByIdList(skuIds);
+    }
+
+    public Stock getStockBySkuId(Long skuId) {
+        return stockMapper.selectByPrimaryKey(skuId);
+    }
+
+    @Transactional
+    public void decreaseSeckillStock(CartDto cartDto) {
+        int count = stockMapper.decreaseSeckillStock(cartDto.getSkuId(), cartDto.getNum());
+        if (count != 1) {
+            throw new PayException(ExceptionEnum.STOCK_NOT_ENOUGH);
+        }
+    }
 }
