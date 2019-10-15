@@ -11,6 +11,10 @@
 
     <groupId>com.ego.order</groupId>
     <artifactId>ego-order</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>ego-order-interface</module>
+    </modules>
     <dependencies>
         <dependency>
             <groupId>com.ego.item</groupId>
