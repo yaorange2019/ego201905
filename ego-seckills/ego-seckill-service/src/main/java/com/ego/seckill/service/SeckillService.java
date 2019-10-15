@@ -1,8 +1,8 @@
 package com.ego.seckill.service;
 
 
-import com.ego.seckill.vo.SeckillGoods;
-import com.ego.seckill.vo.SeckillMessage;
+import com.ego.order.dto.SeckillMessage;
+import com.ego.seckill.pojo.SeckillGoods;
 
 import java.util.List;
 

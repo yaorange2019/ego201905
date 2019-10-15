@@ -15,9 +15,8 @@
         <module>ego-sms-service</module>
         <module>ego-auth</module>
         <module>ego-cart</module>
-        <module>ego-order</module>
-        <module>ego-seckill</module>
         <module>ego-seckills</module>
+        <module>ego-orders</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -88,14 +87,7 @@
         </dependencies>
     </dependencyManagement>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+
 
     <repositories>
         <repository>

@@ -1,7 +1,7 @@
 package com.ego.seckill.controller;
 
 import com.ego.seckill.service.SeckillService;
-import com.ego.seckill.vo.SeckillGoods;
+import com.ego.seckill.pojo.SeckillGoods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

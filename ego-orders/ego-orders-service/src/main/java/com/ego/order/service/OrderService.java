@@ -9,12 +9,11 @@ import com.ego.common.utils.IdWorker;
 import com.ego.order.client.GoodsClient;
 import com.ego.order.dto.OrderStatusEnum;
 import com.ego.order.dto.PayStateEnum;
+import com.ego.order.dto.SeckillMessage;
 import com.ego.order.filter.LoginInterceptor;
 import com.ego.order.mapper.*;
 import com.ego.order.pojo.*;
 import com.ego.order.utils.PayHelper;
-import com.ego.seckill.vo.SeckillGoods;
-import com.ego.seckill.vo.SeckillMessage;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -208,7 +207,6 @@ public class OrderService {
 
     @Transactional
     public Long createSeckillOrder(SeckillMessage seckillMessage) {
-        SeckillGoods seckillGoods = seckillMessage.getSeckillGoods();
         Order order = new Order();
         //生成订单ID，采用自己的算法生成订单ID
         long orderId = idWorker.nextId();
@@ -216,8 +214,8 @@ public class OrderService {
 
         order.setCreateTime(new Date());
         order.setPostFee(0L);
-        order.setActualPay(seckillGoods.getSeckillPrice());
-        order.setTotalPay(seckillGoods.getPrice());
+        order.setActualPay(seckillMessage.getSeckillPrice());
+        order.setTotalPay(seckillMessage.getPrice());
         order.setPaymentType(1);
 
 
@@ -234,18 +232,18 @@ public class OrderService {
         //保存秒杀订单
         SeckillOrder seckillOrder = new SeckillOrder();
         seckillOrder.setOrderId(orderId);
-        seckillOrder.setSkuId(seckillGoods.getSkuId());
+        seckillOrder.setSkuId(seckillMessage.getSkuId());
         seckillOrder.setUserId(user.getId());
         seckillOrderMapper.insertSelective(seckillOrder);
 
         //保存detail
         OrderDetail orderDetail = new OrderDetail();
         orderDetail.setOrderId(orderId);
-        orderDetail.setImage(seckillGoods.getImage());
-        orderDetail.setPrice(seckillGoods.getSeckillPrice());
+        orderDetail.setImage(seckillMessage.getImage());
+        orderDetail.setPrice(seckillMessage.getSeckillPrice());
         orderDetail.setNum(1);
-        orderDetail.setSkuId(seckillGoods.getSkuId());
-        orderDetail.setTitle(seckillGoods.getTitle());
+        orderDetail.setSkuId(seckillMessage.getSkuId());
+        orderDetail.setTitle(seckillMessage.getTitle());
 
         orderDetailMapper.insert(orderDetail);
 
@@ -264,7 +262,7 @@ public class OrderService {
         payLog.setStatus(PayStateEnum.NOT_PAY.getValue());
         payLog.setPayType(1);
         payLog.setOrderId(orderId);
-        payLog.setTotalFee(seckillGoods.getSeckillPrice());
+        payLog.setTotalFee(seckillMessage.getSeckillPrice());
         payLog.setCreateTime(new Date());
         //获取用户信息
         payLog.setUserId(user.getId());

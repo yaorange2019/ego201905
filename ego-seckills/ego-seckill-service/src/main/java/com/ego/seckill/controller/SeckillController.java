@@ -2,12 +2,12 @@ package com.ego.seckill.controller;
 
 
 import com.ego.auth.entity.UserInfo;
+import com.ego.order.dto.SeckillMessage;
 import com.ego.seckill.access.AccessLimit;
 import com.ego.seckill.client.GoodsClient;
 import com.ego.seckill.interceptor.LoginInterceptor;
+import com.ego.seckill.pojo.SeckillGoods;
 import com.ego.seckill.service.SeckillService;
-import com.ego.seckill.vo.SeckillGoods;
-import com.ego.seckill.vo.SeckillMessage;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -155,8 +155,15 @@ public class SeckillController implements InitializingBean {
         //6.库存充足，减redis库存，请求入队
         hashOperations.increment(seckillGoods.getSkuId().toString(), -1);
 
-        //6.1 获取用户信息
-        SeckillMessage seckillMessage = new SeckillMessage(userInfo,seckillGoods);
+        //6.1 封装秒杀数据
+        SeckillMessage seckillMessage = new SeckillMessage(
+                userInfo,
+                seckillGoods.getSeckillPrice(),
+                seckillGoods.getPrice(),
+                seckillGoods.getSkuId(),
+                seckillGoods.getTitle(),
+                seckillGoods.getImage()
+        );
         //6.2 发送消息
         this.seckillService.sendMessage(seckillMessage);
         //7.删除分布式锁条件

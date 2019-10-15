@@ -1,6 +1,6 @@
 package com.ego.seckill.mapper;
 
-import com.ego.seckill.vo.SeckillGoods;
+import com.ego.seckill.pojo.SeckillGoods;
 import tk.mybatis.mapper.common.Mapper;
 
 /**

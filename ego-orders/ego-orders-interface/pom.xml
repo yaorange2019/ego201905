@@ -3,19 +3,23 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>ego-item</artifactId>
-        <groupId>com.ego.item</groupId>
+        <artifactId>ego-orders</artifactId>
+        <groupId>com.ego.order</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.ego.item</groupId>
-    <artifactId>ego-item-interface</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <groupId>com.ego.order</groupId>
+    <artifactId>ego-orders-interface</artifactId>
     <dependencies>
         <dependency>
             <groupId>com.ego.common</groupId>
             <artifactId>ego-common</artifactId>
+            <version>${ego.latest.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ego.auth</groupId>
+            <artifactId>ego-auth-common</artifactId>
             <version>${ego.latest.version}</version>
         </dependency>
         <dependency>
@@ -26,6 +30,10 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
         </dependency>
     </dependencies>
 

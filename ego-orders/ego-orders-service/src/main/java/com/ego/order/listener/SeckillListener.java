@@ -2,8 +2,8 @@ package com.ego.order.listener;
 
 
 import com.ego.common.utils.JsonUtils;
+import com.ego.order.dto.SeckillMessage;
 import com.ego.order.service.OrderService;
-import com.ego.seckill.vo.SeckillMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.rabbit.annotation.Exchange;
@@ -41,14 +41,13 @@ public class SeckillListener {
                     ignoreDeclarationExceptions = "true",
                     type = ExchangeTypes.TOPIC),
             key = {"order.seckill"}))
-    public void listenCreate(String json) throws Exception {
-        log.info("开始创建秒杀订单:{}",json);
-        if (json == null) {
+    public void listenCreate(SeckillMessage seckillMessage) throws Exception {
+        log.info("开始创建秒杀订单:{}",seckillMessage);
+        if (seckillMessage == null) {
             return;
         }
         try
         {
-            SeckillMessage seckillMessage = JsonUtils.parse(json, SeckillMessage.class);
             orderService.createSeckillOrder(seckillMessage);
         }catch (Exception e)
         {

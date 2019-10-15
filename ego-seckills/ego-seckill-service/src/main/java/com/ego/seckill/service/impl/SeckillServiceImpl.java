@@ -1,7 +1,7 @@
 package com.ego.seckill.service.impl;
 
-import com.ego.common.utils.JsonUtils;
 import com.ego.item.pojo.Stock;
+import com.ego.order.dto.SeckillMessage;
 import com.ego.order.pojo.Order;
 import com.ego.order.pojo.OrderDetail;
 import com.ego.order.pojo.SeckillOrder;
@@ -10,9 +10,8 @@ import com.ego.seckill.client.OrderClient;
 import com.ego.seckill.mapper.SeckillMapper;
 import com.ego.seckill.mapper.SeckillOrderMapper;
 import com.ego.seckill.mapper.SkuMapper;
+import com.ego.seckill.pojo.SeckillGoods;
 import com.ego.seckill.service.SeckillService;
-import com.ego.seckill.vo.SeckillGoods;
-import com.ego.seckill.vo.SeckillMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -130,11 +129,10 @@ public class SeckillServiceImpl implements SeckillService {
      */
     @Override
     public void sendMessage(SeckillMessage seckillMessage) {
-        String json = JsonUtils.serialize(seckillMessage);
         try {
-            this.amqpTemplate.convertAndSend("order.seckill", json);
+            this.amqpTemplate.convertAndSend("order.seckill", seckillMessage);
         }catch (Exception e){
-            LOGGER.error("秒杀商品消息发送异常，商品id：{}",seckillMessage.getSeckillGoods().getSkuId(),e);
+            LOGGER.error("秒杀商品消息发送异常，商品id：{}",seckillMessage.getSkuId(),e);
         }
     }
 

@@ -1,4 +1,4 @@
-package com.ego.seckill.vo;
+package com.ego.seckill.pojo;
 
 import lombok.Data;
 

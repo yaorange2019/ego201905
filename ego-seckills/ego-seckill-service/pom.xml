@@ -13,6 +13,26 @@
     <artifactId>ego-seckill-service</artifactId>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.ego.seckill</groupId>
+            <artifactId>ego-seckill-interface</artifactId>
+            <version>${ego.latest.version}</version>
+        </dependency>
+        <!--商品微服务-->
+        <dependency>
+            <groupId>com.ego.item</groupId>
+            <artifactId>ego-item-interface</artifactId>
+            <version>${ego.latest.version}</version>
+        </dependency>
+        <!--订单微服务-->
+        <dependency>
+            <groupId>com.ego.order</groupId>
+            <artifactId>ego-orders-interface</artifactId>
+            <version>${ego.latest.version}</version>
+        </dependency>
+
+
         <!-- eureka -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -28,12 +48,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <!--商品微服务-->
-        <dependency>
-            <groupId>com.ego.item</groupId>
-            <artifactId>ego-item-interface</artifactId>
-            <version>${ego.latest.version}</version>
-        </dependency>
+
 
 
         <dependency>
@@ -60,12 +75,6 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
-        <!--订单微服务-->
-        <dependency>
-            <groupId>com.ego.order</groupId>
-            <artifactId>ego-order</artifactId>
-            <version>${ego.latest.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>com.ego.auth</groupId>
@@ -90,11 +99,7 @@
             <scope>compile</scope>
         </dependency>
 
-        <dependency>
-            <groupId>com.ego.seckill</groupId>
-            <artifactId>ego-seckill-interface</artifactId>
-            <version>${ego.latest.version}</version>
-        </dependency>
+
 
 
         <!--配置管理依赖-->
